@@ -1,2 +1,7 @@
 **/__*
-run.bat
+*/run.bat
+dnsTunnelIdentifier/Include
+dnsTunnelIdentifier/Lib
+dnsTunnelIdentifier/Scripts
+dnsTunnelIdentifier/share
+dnsTunnelIdentifier/pyvenv.cfg

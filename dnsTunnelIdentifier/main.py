@@ -18,5 +18,5 @@ def main(args):
   print("Server: http://localhost:4040")
 
   # produces tuples of the following form (timestamp: float, packet_raw_bytes: bytes)
-  rdd = sc.parallelize(pcap_to_packets(args.f)[:TEST_MAX_PACKETS])
+  rdd = sc.parallelize(pcap_to_packets(args.f, TEST_MAX_PACKETS))
   analyze(sc, rdd)

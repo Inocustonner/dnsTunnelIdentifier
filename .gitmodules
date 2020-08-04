@@ -1,3 +1,0 @@
-[submodule "dpkt"]
-	path = dpkt
-	url = https://github.com/kbandla/dpkt
