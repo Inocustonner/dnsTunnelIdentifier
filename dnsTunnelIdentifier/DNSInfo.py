@@ -1,7 +1,7 @@
-import dpkt
+from dpkt import dpkt
 import enum
 
-from functional import compose
+from dnsTunnelIdentifier.functional import compose
 
 class DnsType(enum.Enum):
   A = 1

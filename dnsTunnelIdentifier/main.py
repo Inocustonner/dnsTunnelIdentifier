@@ -1,6 +1,5 @@
-from DNSInfo import DNSInfo, pcap_to_packets
-from analyze import analyze
-import sys, argparse
+from dnsTunnelIdentifier.DNSInfo import DNSInfo, pcap_to_packets
+from dnsTunnelIdentifier.analyze import analyze
 from pyspark import SparkContext, SparkConf
 # import logger
 
@@ -21,10 +20,3 @@ def main(args):
   # produces tuples of the following form (timestamp: float, packet_raw_bytes: bytes)
   rdd = sc.parallelize(pcap_to_packets(args.f)[:TEST_MAX_PACKETS])
   analyze(sc, rdd)
-  
-if __name__ == "__main__":
-  parser = argparse.ArgumentParser()
-  parser.add_argument('-f', type=str, 
-                      help="Path to pcap file that should be analyzed",
-                      required=True)
-  main(parser.parse_args(sys.argv[1:]))
