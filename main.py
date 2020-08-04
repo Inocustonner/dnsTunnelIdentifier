@@ -2,7 +2,6 @@ from DNSInfo import DNSInfo, pcap_to_packets
 from analyze import analyze
 import sys, argparse
 from pyspark import SparkContext, SparkConf
-from collections import defa
 # import logger
 
 # SparkContext.setSystemProperty('spark.executor.memory', '2g')

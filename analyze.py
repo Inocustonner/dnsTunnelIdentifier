@@ -5,6 +5,7 @@ from DNSInfo import DNSInfo
 import functools
 
 TRUSTED_DNS_FILE="trustedDNS.txt"
+
 def getTrustedDNS() -> list:
   # bcs file is small there is no need to use spark
   with open(TRUSTED_DNS_FILE, 'r', encoding='utf8') as file:
@@ -19,4 +20,5 @@ def analyze(sc: SparkContext, rdd_raw_packets: RDD) -> None:
   rddDns = rdd_raw_packets.map(lambda tup: DNSInfo(tup[1], tup[0]))
   # cache bcs only this rdd will be used in the application
   rddDns = rddDns.filter(lambda dnsinfo: all(map(lambda ip: ip not in trustedDNS, [dnsinfo.sip, dnsinfo.dip]))).cache()
+  printIPDirections(rddDns)
   
