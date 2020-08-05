@@ -1,7 +1,8 @@
 from dnsTunnelIdentifier.DNSInfo import DNSInfo, pcap_to_packets
 from dnsTunnelIdentifier.analyze import analyze
 from pyspark import SparkContext, SparkConf
-# import logger
+import logging
+import utils
 
 # SparkContext.setSystemProperty('spark.executor.memory', '2g')
 # fname = R"F:\hackathon\Data\clean.pcap"
@@ -14,6 +15,8 @@ def main(args):
   conf.set("spark.sql.execution.arrow.enabled", "true")
   sc = SparkContext(conf=conf)
   sc.setLogLevel("ERROR")
+
+  utils.initLogger(logging.DEBUG)
 
   print("Server: http://localhost:4040")
 

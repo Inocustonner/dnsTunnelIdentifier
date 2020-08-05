@@ -3,14 +3,20 @@ from socket import inet_aton, inet_ntoa
 from dnsTunnelIdentifier.functional import compose
 from dnsTunnelIdentifier.DNSInfo import DNSInfo
 import functools
-import os.path
+import os
 
-TRUSTED_DNS_FILE=os.path.realpath(R"dnsTunnelIdentifier\trustedDNS.txt")
+TRUSTED_DNS_FILE="trustedDNS.txt"
+TRUSTED_DNS_PATH=fR'.\{TRUSTED_DNS_FILE}'
 
 def getTrustedDNS() -> list:
   # bcs file is small there is no need to use spark
-  with open(TRUSTED_DNS_FILE, 'r', encoding='utf8') as file:
-    return file.readlines()
+  try:
+    with open(TRUSTED_DNS_PATH, 'r', encoding='utf8') as file:
+      return file.readlines()
+  except FileNotFoundError:
+    print(f"{TRUSTED_DNS_FILE} not found")
+    print('Returning empty trustedDNS list')
+    return []
 
 def printIPDirections(rddDns: RDD, cnt = 10) -> None:
   print('\n'.join(map(lambda dnsinfo: f'{dnsinfo.sip}->{dnsinfo.dip}', rddDns.take(10))))

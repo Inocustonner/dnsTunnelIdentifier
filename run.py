@@ -1,5 +1,5 @@
 from sys import path, argv
-from os.path import dirname, realpath
+import os
 import argparse
 
 # from scapy.utils import RawPcapReader, PcapReader
@@ -16,6 +16,8 @@ import argparse
 
 from dnsTunnelIdentifier.main import main 
 if __name__ == "__main__":
+  os.chdir(os.path.dirname(os.path.abspath(__file__)))
+  
   parser = argparse.ArgumentParser()
   parser.add_argument('-f', type=str, 
                       help="path to pcap file that should be analyzed",
