@@ -23,4 +23,3 @@ def initLogger(logLevel: int, **kwargs):
   
 def getLogger():
   return logging.getLogger(LOGGER_NAME)
-  

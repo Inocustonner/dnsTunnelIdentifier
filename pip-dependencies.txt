@@ -1,6 +1,7 @@
 attrs==19.3.0
 Automat==20.2.0
 cffi==1.14.1
+chardet==3.0.4
 constantly==15.1.0
 cryptography==3.0
 cssselect==1.1.0
@@ -11,6 +12,7 @@ itemadapter==0.1.0
 itemloaders==1.0.1
 jmespath==0.10.0
 lxml==4.5.2
+numpy==1.19.1
 parsel==1.6.0
 Protego==0.1.16
 py4j==0.10.9
@@ -21,6 +23,8 @@ PyDispatcher==2.0.5
 PyHamcrest==2.0.2
 pyOpenSSL==19.1.0
 pyspark==3.0.0
+python-dateutil==2.8.1
+pytz==2020.1
 queuelib==1.5.0
 scapy==2.4.3
 service-identity==18.1.0

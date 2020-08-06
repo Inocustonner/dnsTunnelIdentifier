@@ -1,5 +1,6 @@
 **/__*
 */run.bat
+/sandbox
 dnsTunnelIdentifier/Include
 dnsTunnelIdentifier/Lib
 dnsTunnelIdentifier/Scripts

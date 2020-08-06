@@ -4,6 +4,7 @@ from dnsTunnelIdentifier.functional import compose
 from dnsTunnelIdentifier.DNSInfo import DNSInfo
 import functools
 import os
+import chardet
 
 TRUSTED_DNS_FILE="trustedDNS.txt"
 TRUSTED_DNS_PATH=fR'.\{TRUSTED_DNS_FILE}'
@@ -24,6 +25,11 @@ def printIPDirections(rddDns: RDD, cnt = 10) -> None:
 def printDns(rddDns: RDD, cnt = 10) -> None:
   print('\n'.join(map(repr, rddDns.take(cnt))))
 
+def is_trusted_encoding(raw: bytes) -> bool:
+  trusted_encodings = ['utf-8', 'ascii']
+  encoding = chardet.detect(raw)['encoding']
+  return encoding in trusted_encodings
+
 def analyze(sc: SparkContext, rdd_raw_packets: RDD) -> None:
   # filter out trustedDNS
   trustedDNS = getTrustedDNS()
@@ -31,5 +37,4 @@ def analyze(sc: SparkContext, rdd_raw_packets: RDD) -> None:
   rddDns = rdd_raw_packets.map(lambda bytes_packet: DNSInfo(bytes_packet[0], bytes_packet[1]))
   # cache bcs only this rdd will be used in the application
   rddDns = rddDns.filter(lambda dnsinfo: all(map(lambda ip: ip not in trustedDNS, [dnsinfo.sip, dnsinfo.dip]))).cache()
-  printIPDirections(rddDns, 20)
-  printDns(rddDns, 20)
+  
