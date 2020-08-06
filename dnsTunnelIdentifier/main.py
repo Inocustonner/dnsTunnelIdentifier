@@ -1,20 +1,16 @@
 from dnsTunnelIdentifier.DNSInfo import DNSInfo, pcap_to_packets
 from dnsTunnelIdentifier.analyze import analyze
-from pyspark import SparkContext, SparkConf
 import logging
-import utils
+import dnsTunnelIdentifier.utils
+from pyspark import SparkContext, SparkConf
 
 # SparkContext.setSystemProperty('spark.executor.memory', '2g')
 # fname = R"F:\hackathon\Data\clean.pcap"
 
 TEST_MAX_PACKETS = 1000
 
-def main(args):
-  conf = SparkConf().setAppName('test').setMaster('local[*]')
-  conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
-  conf.set("spark.sql.execution.arrow.enabled", "true")
-  sc = SparkContext(conf=conf)
-  sc.setLogLevel("ERROR")
+def main(sc: SparkContext, *args):
+  
 
   utils.initLogger(logging.DEBUG)
 
