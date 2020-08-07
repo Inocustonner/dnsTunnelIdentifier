@@ -1,6 +1,7 @@
 import enum
 
 from dnsTunnelIdentifier.functional import compose
+from dnsTunnelIdentifier.utils import getLogger
 
 from scapy.utils import RawPcapReader
 from scapy.layers.l2 import Ether
@@ -8,7 +9,7 @@ from scapy.layers.inet import IP, UDP
 from scapy.layers.dns import DNS, DNSQR, DNSRR
 
 from typing import Union, List, Tuple
-
+import traceback
 
 class DnsType(enum.Enum):
   A = 1
@@ -27,17 +28,25 @@ class DnsType(enum.Enum):
 class DNSInfo:
   def __init__(self, raw: bytes, ts: float = 0):
     packet = Ether(raw)
-
+    log = getLogger()
     self.ts = ts
     ip = packet[IP]
 
-    assert ip.haslayer(DNS), 'Packet must have DNS layer'
-    self.sip = ip.src
-    self.dip = ip.dst
-    self.dns = ip[DNS]
-    #assume we have only one query
-    self.qType = self.dns.qd.qtype
-    self.name = self.dns.qd.qname
+    if not ip.haslayer(DNS):
+      self.notDns = True
+      return
+    self.notDns = False
+    try:
+      self.sip = ip.src
+      self.dip = ip.dst
+      self.dns = ip[DNS]
+      #assume we have only one query
+      self.qtype = self.dns.qd.get_field('qtype').i2repr(self.dns.qd, self.dns.qd.qtype)
+      self.name = self.dns.qd.qname
+    except KeyboardInterrupt:
+      raise
+    except Exception as e:
+      print(traceback.format_exc() + '\n' + repr(self.dns))
     # if self.dns.haslayer(DNSRR):
       # self.ans = self.dns
 
@@ -59,6 +68,12 @@ class DNSInfo:
   def getName(self) -> bytes:
     return self.name
 
+  def getServerIP(self) -> str:
+    if self.isResponse():
+      return self.dip
+    else:
+      return self.sip
+    
   def get(self, attr: str, default=None) -> Union[str, None]:
     switch = {
       'name': lambda: self.name,
@@ -68,6 +83,11 @@ class DNSInfo:
     }
     return switch.get(attr, lambda: default)()
 
+  def __eq__(self, dns):
+    return dns.getServerIP() == self.getServerIP()
+  
+  def __hash__(self):
+    return hash(''.join(sorted(self.sip + self.dip)))
 
   def __repr__(self):
     return f"{self.__class__.__name__}({', '.join([f'{k}={repr(v)}' for k,v in vars(self).items()])})"
@@ -86,7 +106,7 @@ convertPacket = lambda pkt: (pkt[0], to_ts(pkt[1]))
   (raw packet, timestamp)
 """  
 def pcap_to_packets(file_path: str, cnt: int = -1) -> List[Tuple[bytes, float]]:
-  return map(convertPacket, RawPcapReader(file_path).read_all(cnt))
+  return list(map(convertPacket, RawPcapReader(file_path).read_all(cnt)))
 
 """ 
   Takes a file path to a pcap file and returns generator of 

@@ -13,8 +13,10 @@ itemloaders==1.0.1
 jmespath==0.10.0
 lxml==4.5.2
 numpy==1.19.1
+pandas==1.1.0
 parsel==1.6.0
 Protego==0.1.16
+psutil==5.7.2
 py4j==0.10.9
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
@@ -31,6 +33,7 @@ ruamel.yaml.clib==0.2.0
 scapy==2.4.3
 service-identity==18.1.0
 six==1.15.0
+tld==0.12.2
 Twisted==20.3.0
 typing==3.7.4.3
 w3lib==1.22.0

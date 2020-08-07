@@ -1,7 +1,10 @@
-allowed-name-len: 0
-min-ttl: 0
-restricted-syms: "/"
-max-body-size: 0
-nth: 0
-d1: 0
+allowed-name-len: 48
+min-ttl: 15
+restricted-syms: '!#/*&^%'
+max-body-size: 200
+packets-per-analysis: 100000
+rdd-slice-cnt: 10
+default-frq: 0.04
+nth: 10
+d1: 0.03
 d2: 0
