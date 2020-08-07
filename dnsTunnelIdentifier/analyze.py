@@ -114,4 +114,6 @@ def analyze(rddDns: RDD) -> Dict[str, Result]:
     result.append((str(ip), repr(unigramAnalysis(doms))))
   log.info(f'Time spent on unigram distribution analysis = {timer.elapsed()}')
 
+  rddDns.unpersist()
+  
   return dict(result)
